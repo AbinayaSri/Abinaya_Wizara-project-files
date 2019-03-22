@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-
+import NavBar from './components/NavBar';
+import Register from './components/Register1';
+import LoginTab from './components/LoginForm';
+import Home from './components/Home';
+//import Output from './components/tableCreation';
+import TableData from './components/Table'
+import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <div className="App">
+        <center><p style={{fontSize:30}}>Credit Karma</p></center>
+        <Home/>
+        <Route path="/LoginForm" component={LoginTab}/>
+        <Route path="/Register1" component={Register}/>
+        <Route path="/Table" component={TableData}/>
+        </div>
+      </Router>
     );
   }
 }
