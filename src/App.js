@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import Home from './components/Home';
 import Register from './components/Register1';
 import LoginTab from './components/LoginForm';
-import Home from './components/Home';
-import Trial1 from './components/Trial1';
-import Trial from './components/Trial';
 import TableData from './components/Table';
 import EnhancedTable from './components/TableSort'
 import {BrowserRouter as Router, Route, Link } from "react-router-dom";

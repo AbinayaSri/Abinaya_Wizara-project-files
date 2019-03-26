@@ -20,9 +20,9 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
+function createData(country, pin, address, city, zip) {
   counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
+  return { id: counter, country, pin, address, city, zip};
 }
 
 function desc(a, b, orderBy) {
@@ -34,7 +34,6 @@ function desc(a, b, orderBy) {
   }
   return 0;
 }
-
 function stableSort(array, cmp) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -44,40 +43,35 @@ function stableSort(array, cmp) {
   });
   return stabilizedThis.map(el => el[0]);
 }
-
 function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
-
 const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'country', numeric: false, disablePadding: true, label: 'Country' },
+  { id: 'pin', numeric: true, disablePadding: false, label: 'Pin' },
+  { id: 'address', numeric: true, disablePadding: false, label: 'Address' },
+  { id: 'city', numeric: true, disablePadding: false, label: 'City' },
+  { id: 'zip', numeric: true, disablePadding: false, label: 'Zip' },
 ];
-
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
-
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
-
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
-          </TableCell>
+        <TableCell >
+          { /*<Checkbox
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={numSelected === rowCount}
+            onChange={onSelectAllClick}
+          />*/}
+        </TableCell>
           {rows.map(
             row => (
-              <TableCell
+             <TableCell
                 key={row.id}
                 align={row.numeric ? 'right' : 'left'}
                 padding={row.disablePadding ? 'none' : 'default'}
@@ -94,6 +88,7 @@ class EnhancedTableHead extends React.Component {
                     onClick={this.createSortHandler(row.id)}
                   >
                     {row.label}
+
                   </TableSortLabel>
                 </Tooltip>
               </TableCell>
@@ -105,7 +100,6 @@ class EnhancedTableHead extends React.Component {
     );
   }
 }
-
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
@@ -114,7 +108,6 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
-
 const toolbarStyles = theme => ({
   root: {
     paddingRight: theme.spacing.unit,
@@ -156,7 +149,7 @@ let EnhancedTableToolbar = props => {
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
-            Nutrition
+            Property list
           </Typography>
         )}
       </div>
@@ -206,28 +199,20 @@ class EnhancedTable extends React.Component {
     orderBy: 'calories',
     selected: [],
     data: [
-      createData('Cupcake', 305, 3.7, 67, 4.3),
-      createData('Donut', 452, 25.0, 51, 4.9),
-      createData('Eclair', 262, 16.0, 24, 6.0),
-      createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-      createData('Gingerbread', 356, 16.0, 49, 3.9),
-      createData('Honeycomb', 408, 3.2, 87, 6.5),
-      createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-      createData('Jelly Bean', 375, 0.0, 94, 0.0),
-      createData('KitKat', 518, 26.0, 65, 7.0),
-      createData('Lollipop', 392, 0.2, 98, 0.0),
-      createData('Marshmallow', 318, 0, 81, 2.0),
-      createData('Nougat', 360, 19.0, 9, 37.0),
-      createData('Oreo', 437, 18.0, 63, 4.0),
+      createData('Kane',1409276011,'448 Shelburne Lane','Sugar Grove',60554),
+      createData('abc',1409276012,'xyz','123','uv',60553),
+      createData('a1',1409276013,'b1','c1','d1',60554),
+      createData('a2',1409276014,'b2','c2','d2',60555),
+      createData('a3',1409276015,'b3','c3','d3',60556),
+      createData('a4',1409276016,'b4','c4','d4',60557),
+      createData('a5',1409276017,'b5','c5','d5',60558)
     ],
     page: 0,
     rowsPerPage: 5,
   };
-
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = 'desc';
-
     if (this.state.orderBy === property && this.state.order === 'desc') {
       order = 'asc';
     }
@@ -278,7 +263,6 @@ class EnhancedTable extends React.Component {
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -307,29 +291,29 @@ class EnhancedTable extends React.Component {
                       key={n.id}
                       selected={isSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
+                    <TableCell padding="checkbox" >
+                        <Checkbox checked={isSelected} displayRowCheckBox="false" />
                       </TableCell>
                       <TableCell component="th" scope="row" padding="none">
-                        {n.name}
+                        {n.country}
                       </TableCell>
-                      <TableCell align="right">{n.calories}</TableCell>
-                      <TableCell align="right">{n.fat}</TableCell>
-                      <TableCell align="right">{n.carbs}</TableCell>
-                      <TableCell align="right">{n.protein}</TableCell>
+                      <TableCell align="right">{n.pin}</TableCell>
+                      <TableCell align="right">{n.address}</TableCell>
+                      <TableCell align="right">{n.city}</TableCell>
+                      <TableCell align="right">{n.zip}</TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={7} />
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[3,7,10,25]}
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
@@ -347,9 +331,7 @@ class EnhancedTable extends React.Component {
     );
   }
 }
-
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
 export default withStyles(styles)(EnhancedTable);
